@@ -9,7 +9,7 @@ const main = async () => {
   });
 
   // get original Stream (S1)
-  const kstream = factory.getKStream("inferproven-kafka-traffic-topic");
+  const kstream = await factory.getKStream("inferproven-kafka-traffic-topic");
 
   // generate modified Stream (S2)
   kstream
