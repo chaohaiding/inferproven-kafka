@@ -31,14 +31,14 @@ const main = async () => {
     //console.log(req.body) // sensor data
     const event = req.body;
     const value = {
-      id: preNode._id,
-      vehicleCount: preNode.vehicleCount,
-      avgMeasuredTime: preNode.avgMeasuredTime,
-      medianMeasuredTime: preNode.medianMeasuredTime,
-      extID: preNode.extID,
-      avgSpeed: preNode.avgSpeed,
-      REPORT_ID: preNode.REPORT_ID,
-      TIMESTAMP: preNode.TIMESTAMP,
+      id: event._id,
+      vehicleCount: event.vehicleCount,
+      avgMeasuredTime: event.avgMeasuredTime,
+      medianMeasuredTime: event.medianMeasuredTime,
+      extID: event.extID,
+      avgSpeed: event.avgSpeed,
+      REPORT_ID: event.REPORT_ID,
+      TIMESTAMP: event.TIMESTAMP,
     };
 
     try {
