@@ -1,0 +1,15 @@
+{
+  "name": "inferproven-kafka-streams",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cars-more-than-5.js",
+  "dependencies": {
+    "kafka-streams": "^5.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
