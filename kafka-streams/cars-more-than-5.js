@@ -8,7 +8,7 @@ factory.on("error", (error) => {
 });
 
 // get original Stream (S1)
-const kstream = await factory.getKStream("inferproven-kafka-traffic-topic");
+const kstream = factory.getKStream("inferproven-kafka-traffic-topic");
 
 // generate modified Stream (S2)
 kstream
