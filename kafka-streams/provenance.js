@@ -1,4 +1,4 @@
 // provenance generating function
-export const provenance = () => {
+export const provenance = (node, f_name) => {
   return "";
 };
