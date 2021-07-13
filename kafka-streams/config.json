@@ -2,7 +2,7 @@
   "noptions": {
     "metadata.broker.list": "localhost:9092",
     "group.id": "inferproven-kafka-traffic",
-    "client.id": "inferproven-kafka-traffic-example",
+    "client.id": "inferproven-kafka-traffic-stream",
     "event_cb": true,
     "compression.codec": "snappy",
     "api.version.request": true,

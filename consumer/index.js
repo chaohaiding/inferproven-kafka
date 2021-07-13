@@ -1,14 +1,17 @@
 const kafka = require("./kafka");
+const { CompressionTypes, CompressionCodecs } = require("kafkajs");
+const SnappyCodec = require("kafkajs-snappy");
 
+CompressionCodecs[CompressionTypes.Snappy] = SnappyCodec;
 const consumer = kafka.consumer({
-  groupId: process.env.GROUP_ID,
+  groupId: process.env.GROUP_ID || "inferproven-kafka-traffic-consumers",
 });
 
 const main = async () => {
   await consumer.connect();
   await consumer.subscribe({
-    topic: process.env.TOPIC,
-    fromBeginning: true,
+    topic: process.env.TOPIC || "inferproven-kafka-traffic-topic-morethan5",
+    //fromBeginning: true,
   });
 
   await consumer.run({
