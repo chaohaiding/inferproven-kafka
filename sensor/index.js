@@ -2,7 +2,7 @@ const csv = require("csv-parser");
 const fs = require("fs");
 const async = require("async");
 const http = require("http");
-const intervalTime = process.env.INTERVAL || 5 * 60 * 1000; // defualt 5 mintes
+const intervalTime = process.env.INTERVAL || 100; // defualt 100 ms
 
 const options = {
   hostname: "127.0.0.1",
@@ -25,42 +25,62 @@ const notify = (message) => {
   req.write(JSON.stringify(message));
   req.end();
 };
-
-let result = [];
-fs.createReadStream("./data/trafficData158324.csv")
-  .pipe(csv())
-  .on("data", (row) => {
-    result.push(row);
-  })
-  .on("end", () => {
-    console.log(
-      "CSV file successfully processed, total records:" + result.length
-    );
-    console.log("Start to send notify data with time interval:" + intervalTime);
-    async.eachSeries(
-      result,
-      function (data, next) {
-        setTimeout(function () {
-          /*
-        data Example:
-          {
-          status: 'OK',
-          avgMeasuredTime: '53',
-          avgSpeed: '69',
-          extID: '668',
-          medianMeasuredTime: '53',
-          TIMESTAMP: '2014-06-09T05:25:00',
-          vehicleCount: '0',
-          _id: '14353465',
-          REPORT_ID: '158324'
-        }
-        */
-          notify(data);
-          next(); // don't forget to execute the callback!
-        }, intervalTime);
-      },
-      function () {
-        console.log("All done!");
-      }
-    );
-  });
+let totalRecords = 0;
+const dataDic = "./data/traffic_june_sep/";
+fs.readdir(dataDic, (err, files) => {
+  async.eachSeries(
+    files,
+    function (file, cb) {
+      let result = [];
+      fs.createReadStream(dataDic + file)
+        .pipe(csv())
+        .on("data", (row) => {
+          result.push(row);
+        })
+        .on("end", () => {
+          console.log(
+            "Read CSV file:" +
+              file +
+              " successfully processed, total records:" +
+              result.length
+          );
+          totalRecords += result.length;
+          console.log(
+            "Start to send notify data with time interval:" + intervalTime
+          );
+          async.eachSeries(
+            result,
+            function (data, next) {
+              setTimeout(function () {
+                /*
+              data Example:
+                {
+                status: 'OK',
+                avgMeasuredTime: '53',
+                avgSpeed: '69',
+                extID: '668',
+                medianMeasuredTime: '53',
+                TIMESTAMP: '2014-06-09T05:25:00',
+                vehicleCount: '0',
+                _id: '14353465',
+                REPORT_ID: '158324'
+              }
+              */
+                notify(data);
+                next(); // don't forget to execute the callback!
+              }, intervalTime);
+            },
+            function () {
+              cb();
+              console.log(
+                "CSV file:" + file + "is done! Total:" + totalRecords
+              );
+            }
+          );
+        });
+    },
+    function () {
+      console.log("All done!");
+    }
+  );
+});

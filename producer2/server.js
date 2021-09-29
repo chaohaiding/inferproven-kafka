@@ -4,11 +4,11 @@ const kafka = require("./kafka");
 
 // Initialize express and define a port
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 // kafka producer;
 const producer = kafka.producer();
-const topic = process.env.TOPIC || "inferproven-kafka-traffic-topic";
+const topic = process.env.TOPIC || "inferproven-kafka-traffic-topic-2";
 const main = async () => {
   const admin = kafka.admin();
   await admin.connect();
@@ -28,7 +28,7 @@ const main = async () => {
 
   // Set up a hook router for traffic data notification
   app.post("/hook", async (req, res) => {
-    console.log(req.body); // sensor data
+    //console.log(req.body) // sensor data
     const event = req.body;
     const value = {
       id: event._id,
@@ -116,7 +116,7 @@ const main = async () => {
 
   // Start express on the defined port
   app.listen(PORT, () =>
-    console.log(`🚀 Traffic producer server is running on port ${PORT}`)
+    console.log(`🚀 Traffic Producer server is running on port ${PORT}`)
   );
 };
 
